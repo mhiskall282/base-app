@@ -1,0 +1,53 @@
+name: Forge Learning Bot
+
+on:
+  schedule:
+    - cron: "5 0-23 1-31 1-12 0-6"   # Tuesdays & Fridays
+  workflow_dispatch:
+
+jobs:
+  forge-bot:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Foundry
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          source ~/.bashrc
+          foundryup
+
+      - name: Create or Update Project
+        run: |
+          if [ ! -d "contracts" ]; then
+            forge init --no-git
+          fi
+
+          DATE=$(date +"%Y-%m-%d")
+          FILE="contracts/Sample_$DATE.sol"
+
+          echo "// SPDX-License-Identifier: MIT" > $FILE
+          echo "pragma solidity ^0.8.20;" >> $FILE
+          echo "" >> $FILE
+          echo "contract Sample$DATE {" >> $FILE
+          echo "    function ping() external pure returns (string memory) {" >> $FILE
+          echo "        return \"hello from $DATE\";" >> $FILE
+          echo "    }" >> $FILE
+          echo "}" >> $FILE
+
+      - name: Run tests
+        run: forge test || true
+
+      - name: Commit changes
+        run: |
+          git config user.name "forge-learning-bot"
+          git config user.email "bot@users.noreply.github.com"
+
+          git add .
+          git commit -m "chore: generate Foundry sample for $(date +'%Y-%m-%d')" || exit 0
+          git push
