@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/runner/work/forge-learning-bot/forge-learning-bot/contracts/Sample_2026-01-03.sol": {
+      "lastModificationDate": 1767471178786,
+      "contentHash": "b8033b4cf98f7a9917f1fb8b8c3ed994",
+      "sourceName": "contracts/Sample_2026-01-03.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Sample_2026_01_03"
+      ]
+    }
+  }
+}
