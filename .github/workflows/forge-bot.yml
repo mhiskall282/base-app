@@ -1,84 +1,13 @@
-# name: Hardhat Learning Bot
-# on:
-#   schedule:
-#     # Every day at 00:05 UTC
-#     - cron: "5 0-23 1-31 1-12 0-6"
-#   workflow_dispatch:
-# jobs:
-#   hardhat-bot:
-#     runs-on: ubuntu-latest
-#     permissions:
-#       contents: write
-#     steps:
-#       # Step 1: Checkout the repository
-#       - name: Checkout repo
-#         uses: actions/checkout@v4
-      
-#       # Step 2: Setup Node.js
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 20
-      
-#       # Step 3: Install Hardhat locally
-#       - name: Install Hardhat
-#         run: |
-#           npm init -y
-#           npm install --save-dev hardhat@^2.22.0 @nomicfoundation/hardhat-toolbox --legacy-peer-deps
-      
-#       # Step 4: Create or update Hardhat project
-#       - name: Create Hardhat Project
-#         run: |
-#           # Create hardhat config if it doesn't exist
-#           if [ ! -f "hardhat.config.js" ]; then
-#             cat > hardhat.config.js << 'EOF'
-#           /** @type import('hardhat/config').HardhatUserConfig */
-#           module.exports = {
-#             solidity: "0.8.20",
-#           };
-#           EOF
-#           fi
-          
-#           # Create contracts directory if it doesn't exist
-#           mkdir -p contracts
-          
-#           # Generate daily contract
-#           DATE=$(date +"%Y-%m-%d")
-#           FILE="contracts/Sample_$DATE.sol"
-#           echo "// SPDX-License-Identifier: MIT" > $FILE
-#           echo "pragma solidity ^0.8.20;" >> $FILE
-#           echo "" >> $FILE
-#           echo "contract Sample_${DATE//-/_} {" >> $FILE
-#           echo "    function ping() external pure returns (string memory) {" >> $FILE
-#           echo "        return \"hello from $DATE\";" >> $FILE
-#           echo "    }" >> $FILE
-#           echo "}" >> $FILE
-      
-#       # Step 5: Compile contracts
-#       - name: Compile contracts
-#         run: npx hardhat compile || true
-      
-#       # Step 6: Run Hardhat tests (if any)
-#       - name: Run Hardhat tests
-#         run: npx hardhat test || true
-      
-#       # Step 7: Commit changes automatically
-#       - name: Commit changes
-#         run: |
-#           git config user.name "hardhat-bot"
-#           git config user.email "bot@users.noreply.github.com"
-#           git add .
-#           git commit -m "chore: generate Hardhat sample for $(date +'%Y-%m-%d')" || exit 0
-#           git push
-
-
-
 name: Hardhat Learning Bot
 on:
   schedule:
     # Every 5 minutes
     - cron: "*/5 * * * *"
   workflow_dispatch:
+
+concurrency:
+  group: hardhat-devops
+  cancel-in-progress: false
 
 jobs:
   hardhat-devops-bot:
@@ -319,18 +248,60 @@ jobs:
           
           # Check if there are changes to commit
           if git diff --staged --quiet; then
-            echo "⚠️ No changes to commit"
+            echo "⚠️ No changes to commit this run"
             exit 0
           fi
           
           # Create commit message with activity summary
-          COMMIT_MSG="🤖 DevOps: $(date +'%Y-%m-%d %H:%M') - Auto-update
+          COMMIT_MSG="🤖 DevOps: $(date +'%Y-%m-%d %H:%M UTC') - Auto-update
 
           Activity: Automated maintenance and updates
           Files changed: $(git diff --staged --name-only | wc -l)
           Status: ✅ All checks passed"
           
           git commit -m "$COMMIT_MSG"
-          git push
           
-          echo "✅ Changes pushed successfully!"
+          # Pull with rebase and push (retry up to 5 times with exponential backoff)
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            echo "🔄 Attempt $RETRY_COUNT/$MAX_RETRIES: Syncing with remote..."
+            
+            # Pull latest changes with rebase
+            if git pull --rebase origin main; then
+              echo "✅ Successfully rebased on latest changes"
+            else
+              echo "⚠️ Rebase had conflicts, attempting to resolve..."
+              # If rebase fails, abort and try force sync
+              git rebase --abort 2>/dev/null || true
+              git fetch origin main
+              git reset --hard origin/main
+              
+              # Re-apply our changes
+              git add .
+              if ! git diff --staged --quiet; then
+                git commit -m "$COMMIT_MSG" || true
+              else
+                echo "⚠️ Changes were already in remote, nothing to commit"
+                exit 0
+              fi
+            fi
+            
+            # Try to push
+            echo "📤 Pushing changes to remote..."
+            if git push origin main; then
+              echo "✅ Changes pushed successfully!"
+              exit 0
+            fi
+            
+            # Calculate exponential backoff: 2^retry seconds (2, 4, 8, 16, 32)
+            WAIT_TIME=$((2 ** RETRY_COUNT))
+            echo "⚠️ Push failed, waiting ${WAIT_TIME}s before retry..."
+            sleep $WAIT_TIME
+          done
+          
+          echo "❌ Failed to push after $MAX_RETRIES attempts"
+          echo "⚠️ This is likely due to high concurrent activity - will retry on next run"
+          exit 0
