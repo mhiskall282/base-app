@@ -2,7 +2,8 @@ name: Forge Learning Bot
 
 on:
   schedule:
-    - cron: "5 0-23 1-31 1-12 0-6"   # Tuesdays & Fridays
+    # Every day at 00:05 UTC (adjust if needed)
+   - cron: "5 0-23 1-31 1-12 0-6"
   workflow_dispatch:
 
 jobs:
@@ -16,11 +17,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install Foundry
-  run: |
-    curl -L https://foundry.paradigm.xyz | bash
-    ~/.foundry/bin/foundryup
-
+      - name: Setup Foundry
+        uses: foundry-rs/setup-foundry@v1
+        with:
+          version: latest
 
       - name: Create or Update Project
         run: |
@@ -51,4 +51,3 @@ jobs:
           git add .
           git commit -m "chore: generate Foundry sample for $(date +'%Y-%m-%d')" || exit 0
           git push
-
