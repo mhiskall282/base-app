@@ -1,64 +1,72 @@
 name: Hardhat Learning Bot
-
 on:
   schedule:
     # Every day at 00:05 UTC
-    - cron: "5 0-23 1-31 1-12 0-6"
+    - cron: "5 0 * * *"
   workflow_dispatch:
-
 jobs:
   hardhat-bot:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
-
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repo
         uses: actions/checkout@v4
-
+      
       # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
-
+          node-version: 20
+      
       # Step 3: Install Hardhat locally
       - name: Install Hardhat
         run: |
           npm init -y
-          npm install --save-dev hardhat
-
+          npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
+      
       # Step 4: Create or update Hardhat project
       - name: Create Hardhat Project
         run: |
-          if [ ! -d "contracts" ]; then
-            npx hardhat init
+          # Create hardhat config if it doesn't exist
+          if [ ! -f "hardhat.config.js" ]; then
+            cat > hardhat.config.js << 'EOF'
+          /** @type import('hardhat/config').HardhatUserConfig */
+          module.exports = {
+            solidity: "0.8.20",
+          };
+          EOF
           fi
-
+          
+          # Create contracts directory if it doesn't exist
+          mkdir -p contracts
+          
+          # Generate daily contract
           DATE=$(date +"%Y-%m-%d")
           FILE="contracts/Sample_$DATE.sol"
-
           echo "// SPDX-License-Identifier: MIT" > $FILE
           echo "pragma solidity ^0.8.20;" >> $FILE
           echo "" >> $FILE
-          echo "contract Sample$DATE {" >> $FILE
+          echo "contract Sample_${DATE//-/_} {" >> $FILE
           echo "    function ping() external pure returns (string memory) {" >> $FILE
           echo "        return \"hello from $DATE\";" >> $FILE
           echo "    }" >> $FILE
           echo "}" >> $FILE
-
-      # Step 5: Run Hardhat tests (if any)
+      
+      # Step 5: Compile contracts
+      - name: Compile contracts
+        run: npx hardhat compile || true
+      
+      # Step 6: Run Hardhat tests (if any)
       - name: Run Hardhat tests
         run: npx hardhat test || true
-
-      # Step 6: Commit changes automatically
+      
+      # Step 7: Commit changes automatically
       - name: Commit changes
         run: |
           git config user.name "hardhat-bot"
           git config user.email "bot@users.noreply.github.com"
-
           git add .
           git commit -m "chore: generate Hardhat sample for $(date +'%Y-%m-%d')" || exit 0
           git push
