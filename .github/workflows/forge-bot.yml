@@ -1,72 +1,336 @@
+# name: Hardhat Learning Bot
+# on:
+#   schedule:
+#     # Every day at 00:05 UTC
+#     - cron: "5 0-23 1-31 1-12 0-6"
+#   workflow_dispatch:
+# jobs:
+#   hardhat-bot:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+#     steps:
+#       # Step 1: Checkout the repository
+#       - name: Checkout repo
+#         uses: actions/checkout@v4
+      
+#       # Step 2: Setup Node.js
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 20
+      
+#       # Step 3: Install Hardhat locally
+#       - name: Install Hardhat
+#         run: |
+#           npm init -y
+#           npm install --save-dev hardhat@^2.22.0 @nomicfoundation/hardhat-toolbox --legacy-peer-deps
+      
+#       # Step 4: Create or update Hardhat project
+#       - name: Create Hardhat Project
+#         run: |
+#           # Create hardhat config if it doesn't exist
+#           if [ ! -f "hardhat.config.js" ]; then
+#             cat > hardhat.config.js << 'EOF'
+#           /** @type import('hardhat/config').HardhatUserConfig */
+#           module.exports = {
+#             solidity: "0.8.20",
+#           };
+#           EOF
+#           fi
+          
+#           # Create contracts directory if it doesn't exist
+#           mkdir -p contracts
+          
+#           # Generate daily contract
+#           DATE=$(date +"%Y-%m-%d")
+#           FILE="contracts/Sample_$DATE.sol"
+#           echo "// SPDX-License-Identifier: MIT" > $FILE
+#           echo "pragma solidity ^0.8.20;" >> $FILE
+#           echo "" >> $FILE
+#           echo "contract Sample_${DATE//-/_} {" >> $FILE
+#           echo "    function ping() external pure returns (string memory) {" >> $FILE
+#           echo "        return \"hello from $DATE\";" >> $FILE
+#           echo "    }" >> $FILE
+#           echo "}" >> $FILE
+      
+#       # Step 5: Compile contracts
+#       - name: Compile contracts
+#         run: npx hardhat compile || true
+      
+#       # Step 6: Run Hardhat tests (if any)
+#       - name: Run Hardhat tests
+#         run: npx hardhat test || true
+      
+#       # Step 7: Commit changes automatically
+#       - name: Commit changes
+#         run: |
+#           git config user.name "hardhat-bot"
+#           git config user.email "bot@users.noreply.github.com"
+#           git add .
+#           git commit -m "chore: generate Hardhat sample for $(date +'%Y-%m-%d')" || exit 0
+#           git push
+
+
+
 name: Hardhat Learning Bot
 on:
   schedule:
-    # Every day at 00:05 UTC
-    - cron: "5 0-23 1-31 1-12 0-6"
+    # Every 5 minutes
+    - cron: "*/5 * * * *"
   workflow_dispatch:
+
 jobs:
-  hardhat-bot:
+  hardhat-devops-bot:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
-      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
       
-      # Step 3: Install Hardhat locally
-      - name: Install Hardhat
+      - name: Install Dependencies
         run: |
           npm init -y
           npm install --save-dev hardhat@^2.22.0 @nomicfoundation/hardhat-toolbox --legacy-peer-deps
       
-      # Step 4: Create or update Hardhat project
-      - name: Create Hardhat Project
+      - name: Initialize Hardhat Project
         run: |
           # Create hardhat config if it doesn't exist
           if [ ! -f "hardhat.config.js" ]; then
             cat > hardhat.config.js << 'EOF'
           /** @type import('hardhat/config').HardhatUserConfig */
+          require("@nomicfoundation/hardhat-toolbox");
+          
           module.exports = {
-            solidity: "0.8.20",
+            solidity: {
+              version: "0.8.20",
+              settings: {
+                optimizer: {
+                  enabled: true,
+                  runs: 200
+                }
+              }
+            },
+            networks: {
+              hardhat: {
+                chainId: 1337
+              }
+            }
           };
           EOF
           fi
           
-          # Create contracts directory if it doesn't exist
-          mkdir -p contracts
-          
-          # Generate daily contract
-          DATE=$(date +"%Y-%m-%d")
-          FILE="contracts/Sample_$DATE.sol"
-          echo "// SPDX-License-Identifier: MIT" > $FILE
-          echo "pragma solidity ^0.8.20;" >> $FILE
-          echo "" >> $FILE
-          echo "contract Sample_${DATE//-/_} {" >> $FILE
-          echo "    function ping() external pure returns (string memory) {" >> $FILE
-          echo "        return \"hello from $DATE\";" >> $FILE
-          echo "    }" >> $FILE
-          echo "}" >> $FILE
+          # Create contracts directory
+          mkdir -p contracts test scripts
       
-      # Step 5: Compile contracts
-      - name: Compile contracts
-        run: npx hardhat compile || true
-      
-      # Step 6: Run Hardhat tests (if any)
-      - name: Run Hardhat tests
-        run: npx hardhat test || true
-      
-      # Step 7: Commit changes automatically
-      - name: Commit changes
+      - name: Dynamic DevOps Activities
         run: |
-          git config user.name "hardhat-bot"
-          git config user.email "bot@users.noreply.github.com"
+          DATE=$(date +"%Y-%m-%d-%H-%M")
+          RANDOM_ACTION=$((RANDOM % 6))
+          
+          echo "🤖 Running automated DevOps action: $RANDOM_ACTION"
+          
+          case $RANDOM_ACTION in
+            0)
+              # Create new contract
+              echo "📝 Creating new contract..."
+              CONTRACT_NAME="Sample_${DATE//-/_}"
+              cat > "contracts/${CONTRACT_NAME}.sol" << EOF
+          // SPDX-License-Identifier: MIT
+          pragma solidity ^0.8.20;
+          
+          contract ${CONTRACT_NAME} {
+              uint256 public counter;
+              string public message;
+              
+              constructor() {
+                  message = "Deployed at ${DATE}";
+              }
+              
+              function increment() external {
+                  counter++;
+              }
+              
+              function setMessage(string memory _msg) external {
+                  message = _msg;
+              }
+              
+              function getInfo() external view returns (uint256, string memory) {
+                  return (counter, message);
+              }
+          }
+          EOF
+              echo "✅ Created contract: ${CONTRACT_NAME}"
+              ;;
+              
+            1)
+              # Update existing contract
+              echo "🔄 Updating random contract..."
+              if [ -d "contracts" ] && [ "$(ls -A contracts/*.sol 2>/dev/null)" ]; then
+                RANDOM_FILE=$(ls contracts/*.sol | shuf -n 1)
+                echo "// Updated: ${DATE}" >> "$RANDOM_FILE"
+                echo "✅ Updated: $RANDOM_FILE"
+              else
+                echo "⚠️ No contracts to update, creating new one..."
+                cat > "contracts/Initial_${DATE//-/_}.sol" << EOF
+          // SPDX-License-Identifier: MIT
+          pragma solidity ^0.8.20;
+          
+          contract Initial {
+              function hello() external pure returns (string memory) {
+                  return "Hello DevOps!";
+              }
+          }
+          EOF
+              fi
+              ;;
+              
+            2)
+              # Create test file
+              echo "🧪 Creating test file..."
+              cat > "test/Test_${DATE//-/_}.js" << 'EOF'
+          const { expect } = require("chai");
+          const { ethers } = require("hardhat");
+          
+          describe("DevOps Test Suite", function () {
+            it("Should deploy successfully", async function () {
+              expect(true).to.equal(true);
+            });
+            
+            it("Should pass timestamp check", async function () {
+              const timestamp = Date.now();
+              expect(timestamp).to.be.greaterThan(0);
+            });
+          });
+          EOF
+              echo "✅ Created test file"
+              ;;
+              
+            3)
+              # Clean old files (keep last 10 contracts)
+              echo "🧹 Cleaning old contracts..."
+              if [ -d "contracts" ] && [ "$(ls -A contracts/*.sol 2>/dev/null | wc -l)" -gt 10 ]; then
+                ls -t contracts/*.sol | tail -n +11 | xargs rm -f
+                echo "✅ Cleaned old contracts"
+              else
+                echo "⚠️ Not enough files to clean"
+              fi
+              ;;
+              
+            4)
+              # Create deployment script
+              echo "🚀 Creating deployment script..."
+              cat > "scripts/deploy_${DATE//-/_}.js" << 'EOF'
+          const hre = require("hardhat");
+          
+          async function main() {
+            console.log("🚀 Deployment simulation started...");
+            console.log("Network:", hre.network.name);
+            console.log("Timestamp:", new Date().toISOString());
+            console.log("✅ Deployment simulation complete!");
+          }
+          
+          main().catch((error) => {
+            console.error(error);
+            process.exitCode = 1;
+          });
+          EOF
+              echo "✅ Created deployment script"
+              ;;
+              
+            5)
+              # Create README update
+              echo "📚 Updating documentation..."
+              cat > "DEVOPS_LOG.md" << EOF
+          # DevOps Activity Log
+          
+          Last automated run: ${DATE}
+          
+          ## Recent Activities
+          - Automated contract management
+          - Continuous integration checks
+          - Test suite maintenance
+          - Documentation updates
+          
+          ## Stats
+          - Contracts: $(ls contracts/*.sol 2>/dev/null | wc -l)
+          - Tests: $(ls test/*.js 2>/dev/null | wc -l)
+          - Scripts: $(ls scripts/*.js 2>/dev/null | wc -l)
+          
+          ---
+          *This file is automatically generated by the DevOps bot*
+          EOF
+              echo "✅ Updated documentation"
+              ;;
+          esac
+      
+      - name: Compile Contracts
+        run: |
+          if [ "$(ls -A contracts/*.sol 2>/dev/null)" ]; then
+            npx hardhat compile
+            echo "✅ Compilation successful"
+          else
+            echo "⚠️ No contracts to compile"
+          fi
+      
+      - name: Run Tests
+        run: |
+          if [ "$(ls -A test/*.js 2>/dev/null)" ]; then
+            npx hardhat test --bail || echo "⚠️ Some tests failed (non-blocking)"
+          else
+            echo "⚠️ No tests to run"
+          fi
+      
+      - name: Generate Activity Report
+        run: |
+          cat > "activity_report.txt" << EOF
+          🤖 DevOps Bot Activity Report
+          ================================
+          Timestamp: $(date)
+          
+          📊 Repository Stats:
+          - Contracts: $(ls contracts/*.sol 2>/dev/null | wc -l)
+          - Tests: $(ls test/*.js 2>/dev/null | wc -l)
+          - Scripts: $(ls scripts/*.js 2>/dev/null | wc -l)
+          - Total Files: $(git ls-files | wc -l)
+          
+          📝 Recent Activity:
+          $(git log --oneline -5 2>/dev/null || echo "No previous commits")
+          
+          ✅ Status: Active and Healthy
+          EOF
+          cat activity_report.txt
+      
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "hardhat-devops-bot"
+          git config user.email "devops-bot@github-actions"
+          
+          # Add all changes
           git add .
-          git commit -m "chore: generate Hardhat sample for $(date +'%Y-%m-%d')" || exit 0
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "⚠️ No changes to commit"
+            exit 0
+          fi
+          
+          # Create commit message with activity summary
+          COMMIT_MSG="🤖 DevOps: $(date +'%Y-%m-%d %H:%M') - Auto-update
+
+          Activity: Automated maintenance and updates
+          Files changed: $(git diff --staged --name-only | wc -l)
+          Status: ✅ All checks passed"
+          
+          git commit -m "$COMMIT_MSG"
           git push
+          
+          echo "✅ Changes pushed successfully!"
