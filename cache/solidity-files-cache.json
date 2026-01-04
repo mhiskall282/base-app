@@ -73,42 +73,6 @@
         "Sample_2026_01_03_22_47"
       ]
     },
-    "/home/runner/work/forge-learning-bot/forge-learning-bot/contracts/Sample_2026_01_03_23_32.sol": {
-      "lastModificationDate": 1767499986805,
-      "contentHash": "7b37292cebf64c6397b191485b34e1e3",
-      "sourceName": "contracts/Sample_2026_01_03_23_32.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Sample_2026_01_03_23_32"
-      ]
-    },
     "/home/runner/work/forge-learning-bot/forge-learning-bot/contracts/Sample_2026_01_03_23_55.sol": {
       "lastModificationDate": 1767520099791,
       "contentHash": "94717f8afc4aaa9e33c1898f3bf5c785",
