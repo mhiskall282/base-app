@@ -252,6 +252,42 @@
       "artifacts": [
         "Sample_2026_01_04_08_44"
       ]
+    },
+    "/home/runner/work/forge-learning-bot/forge-learning-bot/contracts/Sample_2026_01_04_08_56.sol": {
+      "lastModificationDate": 1767516966025,
+      "contentHash": "7363d4afcd5007152ed6f69d3173a367",
+      "sourceName": "contracts/Sample_2026_01_04_08_56.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Sample_2026_01_04_08_56"
+      ]
     }
   }
 }
