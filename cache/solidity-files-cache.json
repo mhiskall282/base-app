@@ -182,8 +182,8 @@
       ]
     },
     "/home/runner/work/base-app/base-app/contracts/Sample_2026_01_22_19_51.sol": {
-      "lastModificationDate": 1769517402995,
-      "contentHash": "d1bc4eb301d8461f7b309485f41dba9c",
+      "lastModificationDate": 1769558190841,
+      "contentHash": "610b3a6282f02613cf0ec957b42b3d26",
       "sourceName": "contracts/Sample_2026_01_22_19_51.sol",
       "solcConfig": {
         "version": "0.8.20",
