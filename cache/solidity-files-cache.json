@@ -1,42 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/runner/work/base-app/base-app/contracts/Sample_2026_01_18_10_36.sol": {
-      "lastModificationDate": 1769529209493,
-      "contentHash": "ba00d5a8f68957b663d4dab8bc90f747",
-      "sourceName": "contracts/Sample_2026_01_18_10_36.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Sample_2026_01_18_10_36"
-      ]
-    },
     "/home/runner/work/base-app/base-app/contracts/Sample_2026_01_18_12_19.sol": {
       "lastModificationDate": 1769377718669,
       "contentHash": "9a383d16cf70b3b337eeba5c4baa793b",
@@ -395,78 +359,6 @@
       ],
       "artifacts": [
         "Sample_2026_01_28_11_13"
-      ]
-    },
-    "/home/runner/work/base-app/base-app/contracts/Sample_2026_01_28_14_01.sol": {
-      "lastModificationDate": 1769608876021,
-      "contentHash": "79cab0b66f7264c5a3c1bd53bd6fe12b",
-      "sourceName": "contracts/Sample_2026_01_28_14_01.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Sample_2026_01_28_14_01"
-      ]
-    },
-    "/home/runner/work/base-app/base-app/contracts/Sample_2026_01_28_19_03.sol": {
-      "lastModificationDate": 1769627013913,
-      "contentHash": "b88349d38648b90a103d25f12b37238d",
-      "sourceName": "contracts/Sample_2026_01_28_19_03.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Sample_2026_01_28_19_03"
       ]
     }
   }
