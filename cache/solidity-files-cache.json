@@ -1,42 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/runner/work/base-app/base-app/contracts/Sample_2026_05_11_23_32.sol": {
-      "lastModificationDate": 1779536716025,
-      "contentHash": "9272628a4d2b08105e5b41cf68ffa504",
-      "sourceName": "contracts/Sample_2026_05_11_23_32.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Sample_2026_05_11_23_32"
-      ]
-    },
     "/home/runner/work/base-app/base-app/contracts/Sample_2026_05_12_22_43.sol": {
       "lastModificationDate": 1779218274634,
       "contentHash": "f0e3017515881c0c9e0f44bb3fc51c78",
@@ -395,42 +359,6 @@
       ],
       "artifacts": [
         "Sample_2026_05_24_07_32"
-      ]
-    },
-    "/home/runner/work/base-app/base-app/contracts/Sample_2026_05_24_09_28.sol": {
-      "lastModificationDate": 1779614933366,
-      "contentHash": "17c6f88e54085e4b0519c6d1b55ae5ab",
-      "sourceName": "contracts/Sample_2026_05_24_09_28.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Sample_2026_05_24_09_28"
       ]
     }
   }
