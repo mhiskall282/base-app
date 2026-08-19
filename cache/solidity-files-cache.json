@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/runner/work/base-app/base-app/contracts/Sample_2026_08_16_23_18.sol": {
-      "lastModificationDate": 1787119369820,
-      "contentHash": "eef6c91b584e377bc3b6e482433f20dc",
+      "lastModificationDate": 1787159749400,
+      "contentHash": "d66f1a340be922f37704eb316faf1d74",
       "sourceName": "contracts/Sample_2026_08_16_23_18.sol",
       "solcConfig": {
         "version": "0.8.20",
