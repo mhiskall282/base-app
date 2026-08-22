@@ -1,42 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/runner/work/base-app/base-app/contracts/Sample_2026_08_19_18_54.sol": {
-      "lastModificationDate": 1787350861684,
-      "contentHash": "94effc978c576a1892174663aa3ccc81",
-      "sourceName": "contracts/Sample_2026_08_19_18_54.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Sample_2026_08_19_18_54"
-      ]
-    },
     "/home/runner/work/base-app/base-app/contracts/Sample_2026_08_19_22_45.sol": {
       "lastModificationDate": 1787334205131,
       "contentHash": "6bd833bfc500e9bfe074da8b17b81cd8",
